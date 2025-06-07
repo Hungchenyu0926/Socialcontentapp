@@ -34,7 +34,7 @@ if st.button("🎨 生成圖像與貼文") and (topic or keywords or url):
 
         # 生成文字貼文
         post_response = openai.ChatCompletion.create(
-            model="gpt-3-turbo",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": full_prompt}]
         )
         post_text = post_response.choices[0].message["content"].strip()
