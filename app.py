@@ -16,16 +16,16 @@ audience = st.selectbox("目標對象", ["長者", "照護者", "年輕人", "�
 
 # prompt 模板
 text_prompt_template = """
-你是一位專業的社群行銷文案撰寫者，請依據以下資訊，撰寫一篇適合用於 Facebook 貼文的圖文說明，語氣親切、句子簡短清楚、並以繁體中文輸出。
+你是一位專業的社群行銷文案撰寫者，請依據以下資訊，撰寫一篇適合用於 Facebook和Instagram 貼文的圖文說明，語氣親切、句子簡短清楚、並以繁體中文輸出。
 - 主題：{topic}
 - 目標對象：{audience}
 - 輸出格式：
 【主題】
-一段簡短的說明（50字內）
+一段簡短的說明（200字左右）
 一句鼓舞人心的結語
 """
 
-image_prompt_template = "以 {topic} 為主題，繪製一張皮克斯風格的插畫，風格溫馨、色彩明亮、構圖簡潔。"
+image_prompt_template = "以 {topic} 為主題，繪製一張清新風格的插畫，風格溫馨、色彩明亮、構圖簡潔。"
 
 if st.button("🚀 產生圖文"):
     if not topic:
