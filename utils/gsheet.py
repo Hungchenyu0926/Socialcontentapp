@@ -1,26 +1,22 @@
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-import datetime
 import streamlit as st
+from oauth2client.service_account import ServiceAccountCredentials
+from urllib.parse import urlparse, parse_qs
 
-def save_to_sheet(topic, keywords, post_text, image_url, url):
-    # 認證與串接 Google Sheet
+def get_sheet_id(url):
+    # 從 URL 擷取 Google Sheet 的 ID
+    parsed = urlparse(url)
+    if "/d/" in parsed.path:
+        return parsed.path.split("/d/")[1].split("/")[0]
+    return None
+
+def add_row_to_gsheet(row_data):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_dict(
-        st.secrets["GSPREAD_CREDENTIALS"], scope)
+        st.secrets["gcp_service_account"], scope)
     client = gspread.authorize(creds)
 
-    # 開啟試算表與工作表
-    sheet = client.open_by_key(st.secrets["SHEET_ID"])
-    worksheet = sheet.sheet1
-
-    # 寫入一列資料
-    worksheet.append_row([
-        str(datetime.datetime.now()),
-        topic,
-        keywords,
-        post_text,
-        image_url,
-        url
-    ])
+    sheet_id = get_sheet_id(st.secrets["GSHEET_URL"])
+    sheet = client.open_by_key(sheet_id).sheet1
+    sheet.append_row(row_data, value_input_option="USER_ENTERED")
 
